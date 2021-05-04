@@ -30,9 +30,13 @@ jobs:
             
       - name: export vars
         run: |
-          just creds
-          just vars
-          
+           export ARM_CLIENT_ID=${{secrets.ARM_CLIENT_ID}} 	
+           export ARM_CLIENT_SECRET=${{secrets.ARM_CLIENT_SECRET}} 
+           export ARM_SUBSCRIPTION_ID=${{secrets.ARM_SUBSCRIPTION_ID}} 
+           export ARM_TENANT_ID=${{ secrets.ARM_TENANT_ID }}
+           export TF_ADMIN_USER=${{ secrets.ADMIN_USER }}
+           export TF_SSH_KEY="${{ secrets.SSH_KEY }}"
+
       - name: Init
         run: terraform init -input=false
         
