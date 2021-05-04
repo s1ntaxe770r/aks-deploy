@@ -13,7 +13,6 @@ provider "azurerm" {
 
 module "cluster" {
   source                = "./modules/cluster"
-  ssh_key               = var.ssh_key
   location              = var.location
   kubernetes_version    = var.kubernetes_version  
   
