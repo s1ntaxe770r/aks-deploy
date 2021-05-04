@@ -23,14 +23,6 @@ resource "azurerm_kubernetes_cluster" "aks-cluster" {
     type = "SystemAssigned"
   }
 
-
-    linux_profile {
-        admin_username = var.admin_user
-        ssh_key {
-            key_data = var.ssh_key
-        }
-    }
-
     network_profile {
       network_plugin = "kubenet"
       load_balancer_sku = "Standard"  
