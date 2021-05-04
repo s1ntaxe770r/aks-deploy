@@ -26,7 +26,7 @@ jobs:
 
       - name: install just 
         run: |
-            curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh | bash -s -- --to /usr/local/bin
+           sudo curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh | bash -s -- --to /usr/local/bin
             
       - name: export vars
         run: |
