@@ -1,7 +1,8 @@
 # change if you wish
 SERVICE_PRINCIPAL_NAME=aks-demo-sp
 SUBCRIPTION_ID=$SUBCRIPTION_ID
-SCOPE=/subscriptions/${SUBCRIPTION_ID}
+RG_NAME=
+SCOPE=/subscriptions/${SUBCRIPTION_ID}resourceGroups/${RG_NAME}
 
 sp:
 	az ad sp ceate-for-rbac --name=${SERVICE_PRINCIPAL_NAME} --role="Contributor" --scopes=${SCOPE}
