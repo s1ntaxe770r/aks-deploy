@@ -1,0 +1,45 @@
+name: Plan and apply!
+ 
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Terraform
+        run: |
+          sudo apt-get update && sudo apt-get install -y gnupg software-properties-common curl
+          curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+          sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main" 
+          sudo apt-get update && sudo apt-get install terraform
+
+      - name: install just 
+        run: |
+           sudo curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh | sudo bash -s -- --to /usr/bin
+            
+      - name: export vars
+        run: |
+          just creds
+          just vars
+          
+      - name: Init
+        run: terraform init -input=false
+        
+      - name: Plan
+        run: terraform plan -out=tfplan input=false
+      
+      - name: Apply 
+        run: terraform apply -input=false tfplan -auto-approve
+        
+          
