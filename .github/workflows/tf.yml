@@ -24,16 +24,17 @@ jobs:
           sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main" 
           sudo apt-get update && sudo apt-get install terraform
 
-      - name: install just 
+      - name: install azure cli
         run: |
-           sudo curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh | sudo bash -s -- --to /usr/bin
+           curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+           
+      - name: set subscription
+        run:  az account set --subscription=${{secrets.ARM_SUBSCRIPTION_ID}} 
             
-      - name: export vars
+      - name: authenitcate
         run: |
-           export ARM_CLIENT_ID=${{secrets.ARM_CLIENT_ID}} 	
-           export ARM_CLIENT_SECRET=${{secrets.ARM_CLIENT_SECRET}} 
-           export ARM_SUBSCRIPTION_ID=${{secrets.ARM_SUBSCRIPTION_ID}} 
-           export ARM_TENANT_ID=${{ secrets.ARM_TENANT_ID }}
+           az login --service-principal -u ${{secrets.ARM_CLIENT_ID}} -p ${{secrets.ARM_CLIENT_SECRET}}  --tenant ${{ secrets.ARM_TENANT_ID }}
+           
 
       - name: Init
         run: terraform init -input=false
